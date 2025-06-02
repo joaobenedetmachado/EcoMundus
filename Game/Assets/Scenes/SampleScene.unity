@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 1534255040}
   - component: {fileID: 1534255039}
   - component: {fileID: 1534255038}
-  - component: {fileID: 1534255037}
+  - component: {fileID: 1534255041}
   m_Layer: 3
   m_Name: Planet (1)
   m_TagString: Planet
@@ -768,28 +768,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 13.148, y: -559.179, z: -331.411}
---- !u!64 &1534255037
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534255035}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 0
-  m_Mesh: {fileID: 0}
 --- !u!114 &1534255038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3448,6 +3426,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534255035}
   m_Mesh: {fileID: 1831615497}
+--- !u!64 &1534255041
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534255035}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1831615497}
 --- !u!1 &1791008053
 GameObject:
   m_ObjectHideFlags: 0
@@ -3722,7 +3722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnInterval: 15
-  planet: {fileID: 0}
+  planet: {fileID: 1534255036}
   spawnRadius: 10
   spawnHeight: 5
 --- !u!4 &1863414852
@@ -3889,7 +3889,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1164865742}
   mouseSensitivity: 4
+  smoothTime: 0.1
   verticalRotationLimit: 80
+  smoothRotation: 1
 --- !u!114 &2047620631
 MonoBehaviour:
   m_ObjectHideFlags: 0
