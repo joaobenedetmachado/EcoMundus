@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2713760886810870068
+--- !u!1 &960273475233271262
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2494111819043508279}
-  - component: {fileID: 4633388776200932375}
-  - component: {fileID: 5444367760372684367}
-  - component: {fileID: 5128351433415057715}
-  - component: {fileID: 1845096918520044685}
-  - component: {fileID: 4592977076730658540}
+  - component: {fileID: 2951197882752807226}
+  - component: {fileID: 469191271646144330}
+  - component: {fileID: 5242804780936233832}
+  - component: {fileID: 2542298424627161382}
+  - component: {fileID: 5299953254676597501}
+  - component: {fileID: 8966728929284544517}
+  - component: {fileID: 3688275517807492336}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -21,36 +22,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2494111819043508279
+--- !u!4 &2951197882752807226
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.94, y: 21.947952, z: 8.87}
+  m_LocalPosition: {x: -5.54, y: 7.04, z: 4.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4633388776200932375
+--- !u!33 &469191271646144330
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5444367760372684367
+--- !u!23 &5242804780936233832
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -89,13 +90,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5128351433415057715
+--- !u!136 &2542298424627161382
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -112,15 +113,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1845096918520044685
+--- !u!54 &5299953254676597501
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -137,15 +138,15 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &4592977076730658540
+--- !u!114 &8966728929284544517
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713760886810870068}
+  m_GameObject: {fileID: 960273475233271262}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4375b49a7b5fcc443869e83e5aa621ab, type: 3}
@@ -153,3 +154,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planet: {fileID: 0}
   gravity: 9.8
+--- !u!114 &3688275517807492336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960273475233271262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86899ae7869c9bf419bbf2ab0d13c4e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: Capsule
+  isCollected: 0
