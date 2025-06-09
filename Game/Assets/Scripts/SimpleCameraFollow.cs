@@ -8,6 +8,11 @@ public class SimpleCameraFollow : MonoBehaviour
 
     private float verticalRotation = 0f;
 
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     void Update()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
