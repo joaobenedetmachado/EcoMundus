@@ -5,14 +5,14 @@ public class GameManager : MonoBehaviour
 {
     [Header("Nome da Scene do Menu")]
     public string menuSceneName = "MenuScene";
-
+    
     void Start()
     {
         // Trava o cursor no jogo (para o mouse look funcionar)
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
+    
     void Update()
     {
         // Pressione ESC para voltar ao menu
@@ -21,13 +21,13 @@ public class GameManager : MonoBehaviour
             ReturnToMenu();
         }
     }
-
+    
     public void ReturnToMenu()
     {
         Debug.Log("Voltando ao menu...");
         SceneManager.LoadScene(menuSceneName);
     }
-
+    
     // Método para reiniciar o jogo
     public void RestartGame()
     {
