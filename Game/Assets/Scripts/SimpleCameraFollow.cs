@@ -34,7 +34,6 @@ public class SmoothCameraFollow : MonoBehaviour
             Debug.LogError("Player Transform não está atribuído!");
         }
     }
-
     void Update()
     {
         HandleMouseInput();
