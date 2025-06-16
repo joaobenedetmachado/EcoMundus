@@ -2,16 +2,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float walkSpeed = 5f;
-    public float runSpeed = 9f;
+    public float moveSpeed = 5f;
+    public float rotationSpeed = 120f;
     public Transform planet;
 
     private Rigidbody rb;
     private Animator animator;
-    private bool isGrounded;
-    private int lastAnimState = -1;
-    private Vector3 gravityDirection;
-    private PlanetCamera planetCamera;
 
     void Start()
     {
@@ -19,111 +15,66 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         rb.useGravity = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-        // Encontra a câmera do planeta
-        planetCamera = FindObjectOfType<PlanetCamera>();
     }
 
     void FixedUpdate()
     {
-        gravityDirection = (planet.position - transform.position).normalized;
+        // Direção da gravidade
+        Vector3 gravityDirection = (planet.position - transform.position).normalized;
 
-        // Aplica a gravidade customizada
+        // Aplica gravidade personalizada
         rb.AddForce(gravityDirection * 9.81f, ForceMode.Acceleration);
 
-        // Input para movimento e rotação
-        float v = Input.GetAxis("Vertical"); // W/S
-        bool rotatingLeft = Input.GetKey(KeyCode.A);
-        bool rotatingRight = Input.GetKey(KeyCode.D);
+        // Alinha o 'up' com a gravidade
+        Quaternion gravityAlignment = Quaternion.FromToRotation(transform.up, -gravityDirection);
+        rb.MoveRotation(gravityAlignment * rb.rotation);
 
-        // Usa a direção da câmera para movimento
-        Vector3 camForward = Vector3.zero;
-        if (planetCamera != null)
-        {
-            camForward = planetCamera.GetCameraForward();
-        }
-        else
-        {
-            camForward = Vector3.ProjectOnPlane(transform.forward, -gravityDirection).normalized;
-        }
+        // Inputs
+        float horizontal = Input.GetAxis("Horizontal"); // A/D
+        float vertical = Input.GetAxis("Vertical");     // W/S
+        bool isRunning = Input.GetKey(KeyCode.LeftShift); // Corrida
 
-        // Sempre rotaciona o player para ficar alinhado com a câmera
-        // Primeiro, alinha o "up" do player com a direção anti-gravidade
-        Quaternion upRotation = Quaternion.FromToRotation(transform.up, -gravityDirection);
-
-        // Depois, obtém a direção forward da câmera e alinha o player
-        if (planetCamera != null)
+        // Rotação com A/D
+        if (Mathf.Abs(horizontal) > 0.01f)
         {
-            Vector3 cameraForward = planetCamera.GetCameraForward();
-            Quaternion forwardRotation = Quaternion.LookRotation(cameraForward, -gravityDirection);
-
-            // Aplica a rotação final
-            rb.MoveRotation(Quaternion.Slerp(transform.rotation, forwardRotation, 12 * Time.fixedDeltaTime));
-        }
-        else
-        {
-            // Fallback: apenas alinha com a gravidade
-            rb.MoveRotation(Quaternion.Slerp(transform.rotation, upRotation * transform.rotation, 10 * Time.fixedDeltaTime));
+            Quaternion turn = Quaternion.Euler(0f, horizontal * rotationSpeed * Time.fixedDeltaTime, 0f);
+            rb.MoveRotation(rb.rotation * turn);
         }
 
-        // Movimento apenas com W/S
-        Vector3 inputDir = camForward * v;
+        // Movimento com W/S e corrida
+        float currentSpeed = isRunning ? moveSpeed * 1.5f : moveSpeed; // 🔥 Aumenta a velocidade ao correr
+        Vector3 moveDirection = transform.forward * vertical;
+        Vector3 moveVelocity = moveDirection * currentSpeed;
 
-        if (inputDir.magnitude > 0)
-        {
-            float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
-            Vector3 horizontalVelocity = inputDir * speed;
-            Vector3 newVelocity = horizontalVelocity + Vector3.Project(rb.linearVelocity, gravityDirection);
-            rb.linearVelocity = newVelocity;
-        }
-        else
-        {
-            // Para o personagem quando não há input de movimento
-            Vector3 verticalVelocity = Vector3.Project(rb.linearVelocity, gravityDirection);
-            rb.linearVelocity = verticalVelocity;
-        }
+        // Mantém a velocidade de queda
+        Vector3 gravityVelocity = Vector3.Project(rb.linearVelocity, gravityDirection);
 
-        UpdateAnimation(inputDir, rotatingLeft || rotatingRight);
+        // Aplica movimento final
+        rb.linearVelocity = moveVelocity + gravityVelocity;
+
+        // Atualiza animação
+        UpdateAnimation(horizontal, vertical);
     }
 
-    private void UpdateAnimation(Vector3 inputDir, bool isRotating)
+    void UpdateAnimation(float h, float v)
     {
-        int animState = 0;
+        if (animator == null) return;
+
+        int state = 0;
 
         if (Input.GetKey(KeyCode.E))
         {
-            animState = 4;
+            state = 4;
         }
-        else if (inputDir.magnitude > 0)
+        else if (Mathf.Abs(v) > 0.1f)
         {
-            animState = Input.GetKey(KeyCode.LeftShift) ? 2 : 1;
+            state = Input.GetKey(KeyCode.LeftShift) ? 2 : 1;
         }
-        else if (isRotating)
+        else if (Mathf.Abs(h) > 0.1f)
         {
-            // Animação de idle/parado quando só está girando
-            animState = 0;
+            state = 0;
         }
 
-        if (animState != lastAnimState)
-        {
-            animator.SetInteger("transition", animState);
-            lastAnimState = animState;
-        }
-    }
-
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isGrounded = false;
-        }
+        animator.SetInteger("transition", state);
     }
 }

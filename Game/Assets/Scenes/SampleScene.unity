@@ -2374,6 +2374,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8038573356473063035, guid: 5e699e2da8b46a44dab30ac8d5adc268, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.212
+      objectReference: {fileID: 0}
+    - target: {fileID: -8038573356473063035, guid: 5e699e2da8b46a44dab30ac8d5adc268, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.277
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5e699e2da8b46a44dab30ac8d5adc268, type: 3}
       propertyPath: m_Name
       value: Ch06_nonPBR
@@ -2478,8 +2486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c054f86e5d0fa734bb66039e79684076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 7
-  runSpeed: 13
+  moveSpeed: 15
+  rotationSpeed: 200
   planet: {fileID: 1534255036}
 --- !u!114 &1164865746
 MonoBehaviour:
@@ -2507,7 +2515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891dd6830cb69cb418a044b48c15163a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPosition: {fileID: 0}
+  holdPosition: {fileID: 1164865742}
   pickupRadius: 2
 --- !u!1001 &1186096203
 PrefabInstance:
@@ -7119,10 +7127,7 @@ MonoBehaviour:
   planet: {fileID: 1534255036}
   distance: 10
   height: 2
-  rotationSpeed: 2
-  smoothTime: 0.1
-  minVerticalAngle: -30
-  maxVerticalAngle: 60
+  smoothTime: 0.01
 --- !u!114 &1842522922
 MonoBehaviour:
   m_ObjectHideFlags: 0
