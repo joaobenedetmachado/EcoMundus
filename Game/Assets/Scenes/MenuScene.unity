@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f402cc2a7f2ad47bacde90f5e6832e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: PanelsScene
+  gameSceneName: ReworkedPanelsScene
 --- !u!4 &1522461104
 Transform:
   m_ObjectHideFlags: 0
