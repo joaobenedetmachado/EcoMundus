@@ -9,7 +9,7 @@
 
 <a href="https://sketchfab.com/3d-models/trash-can-recycle-bin-16mb-4part-9b2efbe8e0734be49fdcbb432f7a0ea8">Modelo lixeiras</a>
 
-<a href="https://sketchfab.com/3d-models/trash-kit-free-201c15044342491bafe477aa5ed714e8">Modelo lixos</a>
+<a href="https://sketchfab.com/3d-models/trash-kit-free-201c15044342491bafe477aa5ed714e8">Modelo lixos</a> (INDISPONÍVEL)
 
 
 Para animar modelos: https://www.mixamo.com/#/
