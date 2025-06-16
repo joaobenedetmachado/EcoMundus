@@ -7,6 +7,18 @@ public class PlayerItemCollection : MonoBehaviour
 
     private GameObject currentItem; // Item atual carregado
     private string currentItemType; // Tipo do item atual
+    private Animator animator; // Referência do Animator
+
+    void Start()
+    {
+        // Obtém o componente Animator
+        animator = GetComponent<Animator>();
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator não encontrado no GameObject!");
+        }
+    }
 
     void Update()
     {
@@ -21,12 +33,10 @@ public class PlayerItemCollection : MonoBehaviour
     {
         // Procura por itens próximos
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRadius);
-
         foreach (Collider collider in hitColliders)
         {
             // Verifica se é um item coletável
             CollectableItem item = collider.GetComponent<CollectableItem>();
-
             if (item != null && !item.isCollected)
             {
                 // Pega o item
@@ -62,6 +72,12 @@ public class PlayerItemCollection : MonoBehaviour
         item.transform.SetParent(holdPosition);
         item.transform.localPosition = Vector3.zero;
 
+        // Muda o estado da animação para 4 quando pega o item
+        if (animator != null)
+        {
+            animator.SetInteger("transition", 4);
+        }
+
         Debug.Log("Item coletado: " + currentItemType);
     }
 
@@ -83,7 +99,19 @@ public class PlayerItemCollection : MonoBehaviour
             Destroy(currentItem);
             currentItem = null;
             currentItemType = "";
+
+            // Volta o estado da animação para 0 (idle) quando solta o item
+            if (animator != null)
+            {
+                animator.SetInteger("transition", 0);
+            }
         }
+    }
+
+    // Verifica se está carregando um item
+    public bool IsCarryingItem()
+    {
+        return currentItem != null;
     }
 
     // Mostra raio de coleta no editor

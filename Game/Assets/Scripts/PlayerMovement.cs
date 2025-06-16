@@ -5,8 +5,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
     public Transform planet;
-
-    public Transform cameraTransform; // <<< NOVO: Referência da câmera
+    public Transform cameraTransform; // Referência da câmera
 
     private Rigidbody rb;
     private Animator animator;
@@ -33,30 +32,29 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, -gravityDirection) * transform.rotation;
         rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.fixedDeltaTime));
 
-        // Input
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        // Input - APENAS VERTICAL (W/S ou setas cima/baixo)
+        float v = Input.GetAxis("Vertical"); // Ignora Input.GetAxis("Horizontal")
 
-        // Ajusta forward/right da câmera para o plano tangente à superfície do planeta
+        // Ajusta forward da câmera para o plano tangente à superfície do planeta
         Vector3 camForward = Vector3.ProjectOnPlane(cameraTransform.forward, gravityDirection).normalized;
-        Vector3 camRight = Vector3.ProjectOnPlane(cameraTransform.right, gravityDirection).normalized;
 
-        // Calcula direção de movimento com base na câmera
-        Vector3 inputDir = (camForward * v + camRight * h).normalized;
+        // Calcula direção de movimento APENAS para frente/trás
+        Vector3 inputDir = camForward * v; // Remove a parte horizontal (camRight * h)
 
         if (inputDir.magnitude > 0)
         {
             float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
-
             Vector3 horizontalVelocity = inputDir * speed;
             Vector3 newVelocity = horizontalVelocity + Vector3.Project(rb.linearVelocity, gravityDirection);
             rb.linearVelocity = newVelocity;
 
+            // Rotaciona o personagem na direção do movimento
             Quaternion lookRotation = Quaternion.LookRotation(inputDir, -gravityDirection);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, 10 * Time.fixedDeltaTime));
         }
         else
         {
+            // Para o personagem quando não há input
             Vector3 verticalVelocity = Vector3.Project(rb.linearVelocity, gravityDirection);
             rb.linearVelocity = verticalVelocity;
         }

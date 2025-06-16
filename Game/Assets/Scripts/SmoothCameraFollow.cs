@@ -5,116 +5,95 @@ public class SmoothCameraFollow : MonoBehaviour
     [Header("Referências")]
     public Transform player;
 
-    [Header("Configurações do Mouse")]
-    public float mouseSensitivity = 2f;
-    public float smoothTime = 0.1f;
+    [Header("Configurações da Câmera")]
+    public float rotationSpeed = 120f;
+    public float cameraDistance = 5f;
+    public float cameraHeight = 2f;
+    public float smoothSpeed = 10f;
 
-    [Header("Limites de Rotação")]
-    public float verticalRotationLimit = 80f;
+    [Header("Controle do Cursor")]
+    public bool lockCursor = true;
 
-    [Header("Suavização")]
-    public bool smoothRotation = true;
-
-    // Variáveis privadas
-    private float verticalRotation = 0f;
-    private float playerYaw = 0f;
-    private float currentMouseX = 0f;
-    private float currentMouseY = 0f;
-    private float mouseXVelocity = 0f;
-    private float mouseYVelocity = 0f;
+    private float currentYRotation = 0f;
 
     void Start()
     {
-        // Esconde e trava o cursor no centro da tela
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Initialize playerYaw with current player rotation
-        if (player != null)
+        if (lockCursor)
         {
-            playerYaw = player.transform.eulerAngles.y;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
-        // Validação básica
         if (player == null)
         {
             Debug.LogError("Player Transform não está atribuído!");
+        }
+
+        if (player != null)
+        {
+            currentYRotation = player.eulerAngles.y;
         }
     }
 
     void Update()
     {
-        HandleMouseInput();
+        HandleInput();
         HandleCursorToggle();
     }
 
-    void HandleMouseInput()
+    void LateUpdate()
     {
-        if (player == null) return;
-
-        // Captura input do mouse
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        if (smoothRotation)
+        if (player != null)
         {
-            // Suaviza o movimento do mouse
-            currentMouseX = Mathf.SmoothDamp(currentMouseX, mouseX, ref mouseXVelocity, smoothTime);
-            currentMouseY = Mathf.SmoothDamp(currentMouseY, mouseY, ref mouseYVelocity, smoothTime);
+            FollowPlayer();
         }
-        else
+    }
+
+    void HandleInput()
+    {
+        float horizontalInput = 0f;
+
+        if (Input.GetKey(KeyCode.A))
+            horizontalInput = -1f;
+        if (Input.GetKey(KeyCode.D))
+            horizontalInput = 1f;
+
+        if (horizontalInput != 0f)
         {
-            currentMouseX = mouseX;
-            currentMouseY = mouseY;
+            float rotationAmount = horizontalInput * rotationSpeed * Time.deltaTime;
+            currentYRotation += rotationAmount;
+
+            // Gira o jogador no eixo Y
+            player.rotation = Quaternion.Euler(0, currentYRotation, 0);
         }
+    }
 
-        // Rotação horizontal - define a rotação do player
-        playerYaw += currentMouseX;
-        player.rotation = Quaternion.Euler(0f, playerYaw, 0f);
+    void FollowPlayer()
+    {
+        // Calcula a posição desejada da câmera
+        Vector3 offset = new Vector3(0, cameraHeight, -cameraDistance);
+        Vector3 rotatedOffset = Quaternion.Euler(0, currentYRotation, 0) * offset;
+        Vector3 targetPosition = player.position + rotatedOffset;
 
-        // Rotação vertical - inclina a câmera
-        verticalRotation -= currentMouseY;
-        verticalRotation = Mathf.Clamp(verticalRotation, -verticalRotationLimit, verticalRotationLimit);
+        // Move a câmera suavemente para a posição desejada
+        transform.position = Vector3.Lerp(transform.position, targetPosition, smoothSpeed * Time.deltaTime);
 
-        // Aplica a rotação vertical na câmera
-        transform.localEulerAngles = new Vector3(verticalRotation, 0f, 0f);
+        // Faz a câmera olhar para o ponto correto do player
+        transform.LookAt(player.position + Vector3.up * cameraHeight);
     }
 
     void HandleCursorToggle()
     {
-        // Pressiona ESC para mostrar/esconder cursor
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
-        // Clica na tela para travar o cursor novamente
         if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
     }
-
-    // Método público para ajustar sensibilidade em runtime
-    public void SetSensitivity(float newSensitivity)
-    {
-        mouseSensitivity = Mathf.Clamp(newSensitivity, 0.1f, 10f);
-    }
-
-    // Método para resetar a rotação vertical
-    public void ResetVerticalRotation()
-    {
-        verticalRotation = 0f;
-        transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-    }
-} 
+}
