@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     [Header("Nome da Scene do Jogo")]
-    public string gameSceneName = "SampleScene"; // Mude para o nome da sua scene do jogo
+    public string gameSceneName = "PanelsScene"; // Mude para o nome da sua scene do jogo
 
     void Start()
     {
